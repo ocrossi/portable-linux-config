@@ -1,0 +1,10 @@
+#!/bin/bash
+
+git clone git@github.com:neovim/neovim.git ~/personal/neovim
+cd ~/personal/neovim
+git fetch
+git checkout v0.11.2
+
+xargs -a dependencies/packages.txt apt install -y dependencies/packages.txt
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install

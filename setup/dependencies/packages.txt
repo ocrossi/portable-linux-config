@@ -1,0 +1,7 @@
+cmake
+gettext
+lua5.1
+liblua5.1-0-dev
+python3
+curl
+tmux

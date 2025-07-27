@@ -1,0 +1,53 @@
+#!/usr/bin/bash
+
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+filter=""
+dry="0"
+
+while [[ $# > 0 ]]; do
+    if [[ $1 == "--dry" ]]; then
+        dry="1"
+    else
+        filter="$1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry == "1" ]]; then
+        echo "[DRY RUN] : $@"
+    else
+        echo "$@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+
+log "---------- dev-env ----------"
+
+copy_dir() {
+    from=$1
+    to=$2
+
+    rm -rf $to
+    cp -r $from $to
+}
+
+copy_file() {
+    from=$1
+    to=$2
+    name="."$(basename $from)
+
+    execute rm $to/$name
+    execute cp $from $to/$name
+}
+
+copy_dir    config $HOME/.config
+copy_file   tmux.conf $HOME
